@@ -70,6 +70,9 @@
     <Compile Include="Data\Fields\RuleField.cs" />
     <Compile Include="Data\Items\ItemWrapper.cs" />
     <Compile Include="Data\Validator\EmptyRuleValidator.cs" />
+    <Compile Include="Abstraction\IRepository.cs" />
+    <Compile Include="Abstraction\IItemRepository.cs" />
+    <Compile Include="Data\Database\ItemRepository.cs" />
     <Compile Include="Data\Validator\TestableValidator.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

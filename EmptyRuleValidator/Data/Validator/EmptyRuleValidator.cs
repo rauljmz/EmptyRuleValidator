@@ -1,6 +1,6 @@
 ﻿using EmptyRuleValidator.Abstraction;
+using EmptyRuleValidator.Data.Database;
 using EmptyRuleValidator.Data.Fields;
-using Sitecore.Data;
 using Sitecore.Data.Validators;
 using EmptyRuleValidator.Extensions;
 
@@ -8,11 +8,18 @@ namespace EmptyRuleValidator.Data.Validator
 {
     public class EmptyRuleValidator : TestableValidator
     {
-        public EmptyRuleValidator(IItem item, IField field):base(item,field)
+        private readonly IItemRepository _itemRepository;
+
+        public EmptyRuleValidator(IItem item, IField field, IItemRepository itemRepository):base(item,field)
         {
-            
+            _itemRepository = itemRepository;
         }
-        
+
+        public EmptyRuleValidator()
+        {
+            _itemRepository = new ItemRepository(Item);
+        }
+
         protected override ValidatorResult Evaluate()
         {
             var field = Field;
@@ -35,7 +42,7 @@ namespace EmptyRuleValidator.Data.Validator
 
         private bool ContainsAllMacrosFromElementDefinition(Element element)
         {
-            var elementTextField = ElementTextField.Parse(Item.Database.GetItem(new ID(element.Guid))["text"]);
+            var elementTextField = ElementTextField.Parse(_itemRepository.Get(element.Guid)["text"]);
 
             var containsSameElements = elementTextField.Macros.ContainsSameElements(element.Attributes);
             return containsSameElements;
