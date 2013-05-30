@@ -1,4 +1,5 @@
-﻿using EmptyRuleValidator.Abstraction;
+﻿using System;
+using EmptyRuleValidator.Abstraction;
 using EmptyRuleValidator.Data.Fields;
 using EmptyRuleValidator.Data.Items;
 using Sitecore.Data.Validators;
@@ -7,23 +8,18 @@ namespace EmptyRuleValidator.Data.Validator
 {
     public abstract class TestableValidator : StandardValidator
     {
-        public IItem Item { get; set; }
-
-        public IField Field { get; set; }
+      
+        public new Func<IItem> GetItem;
+        public new Func<IField> GetField ;
+        
 
         protected TestableValidator()
         {
-            Item = new ItemWrapper(base.GetItem());
-            Field = new FieldWrapper(base.GetField());
+            GetItem = () => new ItemWrapper(base.GetItem());
+            GetField= () => new FieldWrapper(base.GetField());
         }
 
-
-        protected TestableValidator(IItem item, IField field)
-        {
-            Item = item;
-            Field = field;
-        }
-
+        
         public ValidatorResult TestEvaluate()
         {
             return Evaluate();

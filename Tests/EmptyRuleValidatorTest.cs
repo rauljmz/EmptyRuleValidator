@@ -26,12 +26,11 @@ namespace Tests
             _ruleFieldParser.Setup(r => r.Parse(It.IsAny<string>())).Returns(new RuleField());
 
             _emptyRuleValidator = new EmptyRuleValidator.Data.Validator.EmptyRuleValidator
-                (                    
-                    null,
-                    _mockField.Object,
-                    _mockRepos.Object,
-                    _ruleFieldParser.Object
-                );
+                {
+                    GetField = () => _mockField.Object,
+                    ItemRepository = _mockRepos.Object,
+                    RuleFieldParser = _ruleFieldParser.Object
+                };
         }
         
 

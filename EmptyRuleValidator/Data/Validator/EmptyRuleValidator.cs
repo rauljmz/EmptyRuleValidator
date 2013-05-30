@@ -1,4 +1,5 @@
-﻿using EmptyRuleValidator.Abstraction;
+﻿using System;
+using EmptyRuleValidator.Abstraction;
 using EmptyRuleValidator.Data.Database;
 using EmptyRuleValidator.Data.Fields;
 using Sitecore.Data.Validators;
@@ -8,24 +9,25 @@ namespace EmptyRuleValidator.Data.Validator
 {
     public class EmptyRuleValidator : TestableValidator
     {
-        private readonly IItemRepository _itemRepository;
-        private readonly IRuleFieldParser _ruleFieldParser;
+        
+        private IRuleFieldParser _ruleFieldParser;
+        private IItemRepository _itemRepository;
 
-        public EmptyRuleValidator(IItem item, IField field, IItemRepository itemRepository, IRuleFieldParser ruleFieldParser):base(item,field)
+        public IItemRepository ItemRepository
         {
-            _itemRepository = itemRepository;
-            _ruleFieldParser = ruleFieldParser;
+            get { return _itemRepository ?? (_itemRepository = new ItemRepository(GetItem().Database)); }
+            set { _itemRepository = value; }
         }
 
-        public EmptyRuleValidator()
+        public IRuleFieldParser RuleFieldParser
         {
-            _itemRepository = new ItemRepository(Item.Database);
-            _ruleFieldParser = new RuleFieldParser();
+            get { return _ruleFieldParser ?? (_ruleFieldParser = new RuleFieldParser()); }
+            set { _ruleFieldParser = value; }
         }
-
+        
         protected override ValidatorResult Evaluate()
         {
-            return ValidateRuleField(Field);
+            return ValidateRuleField(GetField());
         }
 
         private ValidatorResult ValidateRuleField(IField field)
@@ -41,8 +43,8 @@ namespace EmptyRuleValidator.Data.Validator
         }
 
         private bool ContainsAllMacrosFromElementDefinition(Element element)
-        {
-            var elementTextField = ElementTextField.Parse(_itemRepository.Get(element.Guid)["text"]);
+        {            
+            var elementTextField = ElementTextField.Parse(ItemRepository.Get(element.Guid)["text"]);
 
             var containsSameElements = elementTextField.Macros.ContainsSameElements(element.Attributes);
             return containsSameElements;
