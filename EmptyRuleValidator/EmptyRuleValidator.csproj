@@ -67,7 +67,9 @@
     <Compile Include="Data\Fields\Element.cs" />
     <Compile Include="Data\Fields\ElementTextField.cs" />
     <Compile Include="Data\Fields\FieldWrapper.cs" />
+    <Compile Include="Data\Fields\IRuleFieldParser.cs" />
     <Compile Include="Data\Fields\RuleField.cs" />
+    <Compile Include="Data\Fields\RuleFieldParser.cs" />
     <Compile Include="Data\Items\ItemWrapper.cs" />
     <Compile Include="Data\Validator\EmptyRuleValidator.cs" />
     <Compile Include="Abstraction\IRepository.cs" />

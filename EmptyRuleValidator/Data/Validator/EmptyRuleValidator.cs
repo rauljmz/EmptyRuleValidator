@@ -9,28 +9,28 @@ namespace EmptyRuleValidator.Data.Validator
     public class EmptyRuleValidator : TestableValidator
     {
         private readonly IItemRepository _itemRepository;
+        private readonly IRuleFieldParser _ruleFieldParser;
 
-        public EmptyRuleValidator(IItem item, IField field, IItemRepository itemRepository):base(item,field)
+        public EmptyRuleValidator(IItem item, IField field, IItemRepository itemRepository, IRuleFieldParser ruleFieldParser):base(item,field)
         {
             _itemRepository = itemRepository;
+            _ruleFieldParser = ruleFieldParser;
         }
 
         public EmptyRuleValidator()
         {
-            _itemRepository = new ItemRepository(Item);
+            _itemRepository = new ItemRepository(Item.Database);
+            _ruleFieldParser = new RuleFieldParser();
         }
 
         protected override ValidatorResult Evaluate()
         {
-            var field = Field;
-            if (field == null || string.IsNullOrEmpty(field.Value)) return ValidatorResult.Valid;
-            
-            return ValidateRuleField(field);
+            return ValidateRuleField(Field);
         }
 
         private ValidatorResult ValidateRuleField(IField field)
-        {
-            var ruleField = RuleField.Parse(field.Value);
+        {            
+            var ruleField = _ruleFieldParser.Parse(field.Value);
 
             foreach (var element in ruleField.Elements)
             {
