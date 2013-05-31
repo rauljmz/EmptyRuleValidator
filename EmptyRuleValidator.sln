@@ -5,6 +5,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyRuleValidator", "Empty
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{635FA99F-27FD-4EF2-B51F-6E6572D517BA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sitecore Packages", "Sitecore Packages", "{4EBA1516-D59D-4A82-9FF0-85FB715D185F}"
+	ProjectSection(SolutionItems) = preProject
+		sitecore packages\EmptyRuleValidator.package = sitecore packages\EmptyRuleValidator.package
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
