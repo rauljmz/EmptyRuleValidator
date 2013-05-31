@@ -27,7 +27,7 @@ namespace Tests
 
             _emptyRuleValidator = new EmptyRuleValidator.Data.Validator.EmptyRuleValidator
                 {
-                    GetField = () => _mockField.Object,
+                    GetField = () => _mockField.Object,                    
                     ItemRepository = _mockRepos.Object,
                     RuleFieldParser = _ruleFieldParser.Object
                 };
@@ -56,7 +56,8 @@ namespace Tests
                         new Element(new Guid("{94C5C335-0902-4B45-B528-11B220005DD7}"),new string[]{} ), 
                     }
                 );
-            _ruleFieldParser.Setup(r => r.Parse(It.IsAny<string>())).Returns(ruleField);            
+            _ruleFieldParser.Setup(r => r.Parse(It.IsAny<string>())).Returns(ruleField);
+            _emptyRuleValidator.GetText = (s, strings) => "error message";
             _mockField.SetupProperty(f => f.Value, "non empty");
 
             var item = new Mock<IItem>();
@@ -69,6 +70,7 @@ namespace Tests
 
             //assert
             Assert.That(result, Is.EqualTo(_emptyRuleValidator.MaxValidatorResult));
+            Assert.That(_emptyRuleValidator.Text,Is.EqualTo("error message"));
         }
 
         [Test]

@@ -1,5 +1,4 @@
-﻿using System;
-using EmptyRuleValidator.Abstraction;
+﻿using EmptyRuleValidator.Abstraction;
 using EmptyRuleValidator.Data.Database;
 using EmptyRuleValidator.Data.Fields;
 using Sitecore.Data.Validators;
@@ -7,6 +6,7 @@ using EmptyRuleValidator.Extensions;
 
 namespace EmptyRuleValidator.Data.Validator
 {
+
     public class EmptyRuleValidator : TestableValidator
     {
         
@@ -24,7 +24,7 @@ namespace EmptyRuleValidator.Data.Validator
             get { return _ruleFieldParser ?? (_ruleFieldParser = new RuleFieldParser()); }
             set { _ruleFieldParser = value; }
         }
-        
+
         protected override ValidatorResult Evaluate()
         {
             return ValidateRuleField(GetField());
@@ -32,11 +32,15 @@ namespace EmptyRuleValidator.Data.Validator
 
         private ValidatorResult ValidateRuleField(IField field)
         {            
-            var ruleField = _ruleFieldParser.Parse(field.Value);
+            var ruleField = RuleFieldParser.Parse(field.Value);
 
             foreach (var element in ruleField.Elements)
             {
-                if (!ContainsAllMacrosFromElementDefinition(element)) return GetMaxValidatorResult();
+                if (!ContainsAllMacrosFromElementDefinition(element))
+                {
+                    Text = GetText("One or more macros are not specified correctly",new string[]{});
+                    return GetMaxValidatorResult();
+                }
             }
 
             return ValidatorResult.Valid;

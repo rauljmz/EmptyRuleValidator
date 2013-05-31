@@ -10,13 +10,15 @@ namespace EmptyRuleValidator.Data.Validator
     {
       
         public new Func<IItem> GetItem;
-        public new Func<IField> GetField ;
-        
+        public new Func<IField> GetField;
+        public new Func<string, string[], string> GetText;
 
+        
         protected TestableValidator()
         {
             GetItem = () => new ItemWrapper(base.GetItem());
             GetField= () => new FieldWrapper(base.GetField());
+            GetText = (s, s1) => base.GetText(s, s1);
         }
 
         
